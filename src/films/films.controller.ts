@@ -7,13 +7,17 @@ import {
   Query,
   Redirect,
   Req,
+  UseFilters,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { Observable, of } from 'rxjs';
+import { FilmsService } from './films.service';
+import { UserEntity } from 'src/entities/user.entity';
+import { HttpExceptionFilter } from 'src/filter/http-exception.filter';
 
 @Controller('films')
 export class FilmsController {
-  constructor() {}
+  constructor(private readonly filmsService: FilmsService) {}
 
   @Get('getItem/:id')
   findAll(@Param() params: any): string {
@@ -48,5 +52,18 @@ export class FilmsController {
   getQuery(@Query('age') age: number, @Query('breed') breed: string) {
     console.log(age, 'query++++++++++', breed);
     return JSON.stringify(age);
+  }
+
+  @Get('userList')
+  async getUserList(): Promise<UserEntity[]> {
+    const users = await this.filmsService.getUserList();
+    return users;
+  }
+
+  @Get('user')
+  @UseFilters(HttpExceptionFilter)
+  async getUser(@Query('id') id: number): Promise<UserEntity> {
+    const users = await this.filmsService.getUser(id);
+    return users;
   }
 }
