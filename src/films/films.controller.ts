@@ -3,17 +3,16 @@ import {
   Get,
   Header,
   Param,
+  ParseIntPipe,
   Post,
   Query,
   Redirect,
   Req,
-  UseFilters,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { Observable, of } from 'rxjs';
 import { FilmsService } from './films.service';
 import { UserEntity } from 'src/entities/user.entity';
-import { HttpExceptionFilter } from 'src/filter/http-exception.filter';
 
 @Controller('films')
 export class FilmsController {
@@ -44,7 +43,6 @@ export class FilmsController {
 
   @Get('observe')
   observables(): Observable<any[]> {
-    // console.log(request, 'request++++++++++');
     return of([]);
   }
 
@@ -61,8 +59,8 @@ export class FilmsController {
   }
 
   @Get('user')
-  @UseFilters(HttpExceptionFilter)
-  async getUser(@Query('id') id: number): Promise<UserEntity> {
+  // @UseFilters(HttpExceptionFilter)
+  async getUser(@Query('id', ParseIntPipe) id: number): Promise<UserEntity> {
     const users = await this.filmsService.getUser(id);
     return users;
   }

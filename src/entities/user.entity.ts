@@ -10,10 +10,10 @@ export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column('character', { length: '255', name: 'name', nullable: true })
   name: string;
 
-  @Column()
+  @Column('character', { length: '255', name: 'email', nullable: true })
   email: string;
 
   @CreateDateColumn()
