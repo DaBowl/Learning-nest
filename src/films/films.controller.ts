@@ -8,11 +8,14 @@ import {
   Query,
   Redirect,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { Observable, of } from 'rxjs';
 import { FilmsService } from './films.service';
 import { UserEntity } from 'src/entities/user.entity';
+// import { AuthGuard } from '@nestjs/passport';
+import { RolesGuard } from 'src/guard/auth.guard';
 
 @Controller('films')
 export class FilmsController {
@@ -53,6 +56,7 @@ export class FilmsController {
   }
 
   @Get('userList')
+  @UseGuards(RolesGuard)
   async getUserList(): Promise<UserEntity[]> {
     const users = await this.filmsService.getUserList();
     return users;

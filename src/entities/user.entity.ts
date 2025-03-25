@@ -16,6 +16,12 @@ export class UserEntity {
   @Column('character', { length: '255', name: 'email', nullable: true })
   email: string;
 
+  @Column('character', { length: '255', name: 'email', nullable: true })
+  password: string;
+
+  @Column({ default: 'user' })
+  role: string;
+
   @CreateDateColumn()
   createdAt: Date;
 }
